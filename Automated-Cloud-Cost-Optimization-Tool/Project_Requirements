@@ -1,23 +1,24 @@
-To build this project, you need the following components and configurations:
+## 📋 Prerequisites & Requirements
 
-AWS Services:
+Before deploying this automation, ensure the following components and configurations are in place:
 
-AWS Lambda: To run the Python cleanup script.
+### **1. AWS Services & Resources**
+* **AWS Lambda**: Serverless compute used to execute the Boto3 cleanup logic.
+* **Amazon SNS**: Simple Notification Service configured with a **Standard Topic** for email delivery.
+* **Amazon EventBridge**: Used as a cron-scheduler (configured for `rate(1 minute)` during testing as seen in logs).
+* **Amazon EC2/EBS**: Target infrastructure for identifying orphaned volumes and unassociated Elastic IPs.
 
-Amazon SNS: To send email notifications upon successful cleanup.
+### **2. Development Environment**
+* **Runtime**: `Python 3.12`
+* **SDK**: `Boto3` (AWS SDK for Python)
+* **Logging**: `Amazon CloudWatch` for execution monitoring and audit trails.
 
-Amazon EventBridge: To schedule the automation (e.g., every 1 minute for testing or weekly for production).
+### **3. IAM Permissions & Security**
+The Lambda execution role requires a policy with **Least Privilege** access. You must attach the following:
+* `AmazonEC2FullAccess`: Required for `describe_volumes`, `delete_volume`, and `release_address` actions.
+* `AmazonSNSFullAccess`: Required for the `publish` action to send reports.
 
-Amazon EC2/EBS: The targets for optimization (Volumes and Elastic IPs).
+**Custom SNS Access Policy:**
+To prevent unauthorized access, the SNS Topic requires a specific access policy allowing the Lambda service principal:
 
-Development Tools:
 
-Python 3.12 Runtime: The language used for the Boto3 SDK logic.
-
-Boto3 Library: The AWS SDK for Python to interact with EC2 and SNS.
-
-Permissions (IAM):
-
-A Lambda execution role with policies for AmazonEC2FullAccess and AmazonSNSFullAccess.
-
-An SNS Access Policy allowing the Lambda service to publish to your specific Topic.
