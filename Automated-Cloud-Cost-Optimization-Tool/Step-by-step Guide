@@ -1,41 +1,31 @@
-Part 2: Step-by-Step Build Guide
+## 🛠️ Step-by-Step Build Guide
 
-Create the SNS Notification System:
+Follow these exact steps to recreate the project as it was successfully validated on **January 3, 2026**.
 
-In the SNS Console, create a Standard Topic named CloudCleanupAlerts.
+### **1. Create the SNS Notification System**
+* **Navigate to SNS Console**: Create a **Standard Topic** named `CloudCleanupAlerts`.
+* **Setup Subscription**: Create an **Email Subscription** using your personal email.
+* **Confirm Identity**: **Crucial:** Check your inbox and click **"Confirm Subscription"** to allow AWS to send you alerts.
 
-Create an Email Subscription using your personal email.
+### **2. Deploy the Lambda Function**
+* **Initialize Function**: Create a new Lambda function named `AutoResourceCleaner`.
+* **Select Runtime**: **Important:** Select **Python 3.12** as the runtime (ensure you avoid Ruby or older versions to maintain compatibility with the Boto3 script).
+* **Logic Implementation**: Paste the Boto3 script into the code editor and replace the `SNS_TOPIC_ARN` placeholder with your actual Topic ARN.
 
-Crucial: Check your inbox and click "Confirm Subscription."
+### **3. Configure Permissions**
+* **IAM Integration**: Under the **Configuration > Permissions** tab, click the **Role Name** link to open the IAM Console.
+* **Attach Policies**: Attach `AmazonEC2FullAccess` and `AmazonSNSFullAccess` to the role.
+* **SNS Access Policy**: Update the SNS Topic's access policy to explicitly allow `lambda.amazonaws.com` to perform the `SNS:Publish` action.
 
-Deploy the Lambda Function:
+### **4. Set the Automation Trigger**
+* **Add Trigger**: In the Lambda **"Function overview"** section, click **+ Add trigger**.
+* **EventBridge Setup**: Select **EventBridge (CloudWatch Events)**.
+* **Define Schedule**: Create a new rule with a schedule expression:
+    * Use `rate(1 minute)` for immediate testing and verification.
+    * Use `rate(7 days)` for production-level weekly optimization.
 
-Create a new Lambda function named AutoResourceCleaner.
-
-Important: Select Python 3.12 as the runtime (avoid Ruby or older versions).
-
-Paste your Boto3 script into the code editor and replace the SNS_TOPIC_ARN with your actual ARN.
-
-Configure Permissions:
-
-Under the Configuration > Permissions tab, click the Role Name to open IAM.
-
-Attach AmazonEC2FullAccess and AmazonSNSFullAccess.
-
-Update the SNS Access Policy to allow lambda.amazonaws.com to perform the SNS:Publish action.
-
-Set the Automation Trigger:
-
-In the Lambda "Function overview," click + Add trigger.
-
-Select EventBridge.
-
-Create a new rule with a schedule expression like rate(1 minute) for testing or rate(7 days) for production.
-
-Validation:
-
-Create an "Available" (unattached) 1GB EBS volume.
-
-Wait for the EventBridge trigger or click Test.
-
-Check your CloudWatch logs to verify the execution time (e.g., 10:35 UTC) and check your email for the report.
+### **5. Validation & Proof of Work**
+* **Generate Test Waste**: Create an **"Available"** (unattached) 1GB EBS volume in the EC2 dashboard.
+* **Execute**: Wait for the EventBridge trigger to fire automatically or manually click the **Test** button.
+* **Verify Logs**: Check **CloudWatch logs** to verify the execution timestamps (e.g., successful runs at **10:35 UTC** on Jan 3).
+* **Audit Trail**: Confirm receipt of the cleanup report in your email inbox.
