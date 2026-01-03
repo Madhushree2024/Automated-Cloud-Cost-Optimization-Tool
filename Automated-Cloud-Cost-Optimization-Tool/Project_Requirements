@@ -1,0 +1,23 @@
+To build this project, you need the following components and configurations:
+
+AWS Services:
+
+AWS Lambda: To run the Python cleanup script.
+
+Amazon SNS: To send email notifications upon successful cleanup.
+
+Amazon EventBridge: To schedule the automation (e.g., every 1 minute for testing or weekly for production).
+
+Amazon EC2/EBS: The targets for optimization (Volumes and Elastic IPs).
+
+Development Tools:
+
+Python 3.12 Runtime: The language used for the Boto3 SDK logic.
+
+Boto3 Library: The AWS SDK for Python to interact with EC2 and SNS.
+
+Permissions (IAM):
+
+A Lambda execution role with policies for AmazonEC2FullAccess and AmazonSNSFullAccess.
+
+An SNS Access Policy allowing the Lambda service to publish to your specific Topic.
