@@ -1,5 +1,4 @@
 # Automated-Cloud-Cost-Optimization-Tool
-# AWS Automated Cloud Cost Optimizer
 
 ## 📌 Overview
 This project is a serverless solution designed to reduce AWS infrastructure costs by automatically identifying and deleting orphaned resources. Using **Python** and the **Boto3 SDK**, the system scans for unused EBS volumes and unassociated Elastic IPs, terminates them, and sends a summary report via email.
